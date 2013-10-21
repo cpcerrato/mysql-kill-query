@@ -19,9 +19,9 @@ $ chmod +x /usr/local/bin/mysql-kill
 Set user, password with administration privileges and path (if necesary), in the file /usr/local/bin/mysql-kill.
 
 Variables:
-MYSQL="" # Path to MySQL binary command. If not set, fill with 'which mysql'
-USER="" # User with administration privileges.
-PASS="" # Password for $USER.
+    MYSQL="" # Path to MySQL binary command. If not set, fill with 'which mysql'
+    USER="" # User with administration privileges.
+    PASS="" # Password for $USER.
 
 Feel free to put the script in the path you want.
 
@@ -43,7 +43,7 @@ Examples:
 Kill all queries that contains "exampledb"
 ```bash
 $ mysql-kill -p exampledb
-```bash
+```
 
 Kill all queries that contains "exampledb" and execution time is greater than 40 seconds and log in file /tmp/mysql-killed.log
 ```bash
