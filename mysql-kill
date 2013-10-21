@@ -1,0 +1,92 @@
+#!/bin/bash
+
+# mysql-kill: Kill MySQL queries that execution time is above the time (in seconds) 
+# specified by command line arguments.)
+
+# Copyright (C) 2013 Carlos Perez Cerrato <cperezcerrato@gmail.com> 
+
+# Functions and variables
+USER=""
+PASS=""
+MYSQL=""
+
+function ayuda(){
+    echo "
+Kill MySQL queries that execution time is above the time (in seconds) specified by command line arguments.
+
+mysql-kill [ -p PATTERN ] [ -t TIME(in seconds) ] [-l /path/to/file.log ].
+
+    -p  PATTERN (optional) Find PATTERN in MySQL queries.
+    -t  TIME (optional) time in seconds, default 15.
+    -i  ID (optional) Query ID to kill (specifying -p or -t is not needed using this).
+    -l  logfile (optional) File to log killed queries.
+
+Examples:
+
+Kill all queries that contains "exampledb"
+$ mysql-kill -p exampledb
+
+Kill all queries that contains "exampledb" and execution time is greater than 40 seconds and log in file /tmp/mysql-killed.log
+$ mysql-kill -p exampledb -t 40 -l /tmp/mysql-killed.log
+
+Kill all queries whose execution time highter 15 seconds (default)
+$ mysql-kill
+
+Kill all queries whose execution time is greater than 3 seconds:
+$ mysql-kill -t 3
+
+Kill query with id equal to XXXX:
+$ mysql-kill -i XXXX
+    "
+}
+
+function check_var(){
+    if [ -z "$USER" ] || [ -z "$PASS" ];then
+        echo "You must set USER and PASS in $0."
+        exit 1
+    elif [ -z "$MYSQ" ];then
+        MYSQL=$(which mysql)
+    fi
+
+    if [ -z $MYSQL ];then
+        echo "I can't find MySQL path."
+        exti 1
+    else
+        MYSQL="$MYSQL -u $USER -p$PASS"
+    fi
+}
+
+# Main
+
+check_var
+
+while getopts "ht:i:p:l:" opt; do
+  case $opt in
+    t) seconds="$OPTARG" ;;
+    p) pattern="$OPTARG" ;;
+    l) logfile="$OPTARG" ;;
+    i) id="$OPTARG" ;;
+    h|?|*) ayuda && exit 0 ;;
+  esac
+done
+
+if [ -n "$id" ];then
+    pattern="^$id"
+    seconds="0"
+fi
+
+test -z "$seconds" && seconds=15
+
+if [ -z "$logfile" ];then
+    for id in $($MYSQL -B -N -e "SHOW FULL PROCESSLIST;"|awk "/$pattern/{if(\$6 > $seconds){ print \$1}}")
+    do
+         $MYSQL -B -N -e "KILL $id;" && echo -e "Killing query ID \e[01;31m$id\e[00m"
+    done
+else
+    for id in $($MYSQL -B -N -e "SHOW FULL PROCESSLIST;"|awk "/$pattern/{if(\$6 > $seconds){ \
+        print \$0 >> \"$logfile\"; print \$1;}}")
+    do
+         $MYSQL -B -N -e "KILL $id;" && echo -e "Killing query ID \e[01;31m$id\e[00m"
+    done
+fi
+
