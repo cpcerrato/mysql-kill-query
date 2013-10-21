@@ -9,7 +9,7 @@ Installation
 Checkout the script:
 
 ```bash
-$ wget https://github.com/cperezcerrato/mysql-kill/master/mysql-kill /usr/local/bin/
+$ wget https://raw.github.com/cperezcerrato/mysql-kill/master/mysql-kill /usr/local/bin/
 ```
 
 Set permissions:
@@ -19,10 +19,11 @@ $ chmod +x /usr/local/bin/mysql-kill
 Set user, password with administration privileges and path (if necesary), in the file /usr/local/bin/mysql-kill.
 
 Variables:
-    MYSQL="" # Path to MySQL binary command. If not set, fill with 'which mysql'
-    USER="" # User with administration privileges.
-    PASS="" # Password for $USER.
-
+```bash
+MYSQL="" # Path to MySQL binary command. If not set, fill with 'which mysql'
+USER="" # User with administration privileges.
+PASS="" # Password for $USER.
+```
 Feel free to put the script in the path you want.
 
 Usage
