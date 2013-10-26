@@ -37,7 +37,7 @@ mysql-kill-query [ -p PATTERN ] [ -t TIME(in seconds) ] [-l /path/to/file.log ].
     -t  TIME (optional) time in seconds, default 15.
     -i  ID (optional) Query ID to kill (specifying -p or -t is not needed using this).
     -l  logfile (optional) File to log killed queries.
-    -s  Show queries.
+    -s  Show running queries.
 ```
 Examples:
 
