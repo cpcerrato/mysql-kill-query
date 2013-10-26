@@ -10,7 +10,7 @@ USER=""
 PASS=""
 MYSQL=""
 
-function ayuda(){
+function usage(){
     echo "
 Kill MySQL queries that execution time is above the time (in seconds) specified by command line arguments.
 
@@ -37,7 +37,7 @@ $ mysql-kill -t 3
 
 Kill query with id equal to XXXX:
 $ mysql-kill -i XXXX
-    "
+"
 }
 
 function check_var(){
@@ -66,7 +66,7 @@ while getopts "ht:i:p:l:" opt; do
     p) pattern="$OPTARG" ;;
     l) logfile="$OPTARG" ;;
     i) id="$OPTARG" ;;
-    h|?|*) ayuda && exit 0 ;;
+    h|?|*) usage && exit 0 ;;
   esac
 done
 

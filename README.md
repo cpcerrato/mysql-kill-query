@@ -1,5 +1,5 @@
-mysql-kill
-==========
+mysql-kill-query
+================
 
 This script let you find MySQL queries by patterns, execution time, or both  and kill them without restarting MySQL daemon.
 
@@ -9,14 +9,14 @@ Installation
 Checkout the script:
 
 ```bash
-$ wget https://raw.github.com/cperezcerrato/mysql-kill/master/mysql-kill /usr/local/bin/
+$ wget https://raw.github.com/cperezcerrato/mysql-kill-query/master/mysql-kill-query /usr/local/bin/
 ```
 
 Set permissions:
 ```bash
-$ chmod +x /usr/local/bin/mysql-kill
+$ chmod +x /usr/local/bin/mysql-kill-query
 ```
-Set user, password with administration privileges and path (if necesary), in the file /usr/local/bin/mysql-kill.
+Set user, password with administration privileges and path (if necesary), in the file /usr/local/bin/mysql-kill-query.
 
 Variables:
 ```bash
@@ -32,7 +32,7 @@ Usage
 Kill MySQL queries that execution time is above the time (in seconds) specified by command line arguments.
 
 ```bash    
-mysql-kill [ -p PATTERN ] [ -t TIME(in seconds) ] [-l /path/to/file.log ].
+mysql-kill-query [ -p PATTERN ] [ -t TIME(in seconds) ] [-l /path/to/file.log ].
 
     -p  PATTERN (optional) Find PATTERN in MySQL queries.
     -t  TIME (optional) time in seconds, default 15.
@@ -43,24 +43,24 @@ Examples:
 
 Kill all queries that contains "exampledb"
 ```bash
-$ mysql-kill -p exampledb
+$ mysql-kill-query -p exampledb
 ```
 
-Kill all queries that contains "exampledb" and execution time is greater than 40 seconds and log in file /tmp/mysql-killed.log
+Kill all queries that contains "exampledb" and execution time is greater than 40 seconds and log in file /tmp/mysql-kill-queryed.log
 ```bash
-$ mysql-kill -p exampledb -t 40 -l /tmp/mysql-killed.log
+$ mysql-kill-query -p exampledb -t 40 -l /tmp/mysql-kill-queryed.log
 ```
 
 Kill all queries whose execution time highter 15 seconds (default)
 ```bash
-$ mysql-kill
+$ mysql-kill-query
 ```
 Kill all queries whose execution time is greater than 3 seconds:
 ```bash
-$ mysql-kill -t 3
+$ mysql-kill-query -t 3
 ```
 
 Kill query with id equal to XXXX:
 ```bash
-$ mysql-kill -i XXXX
+$ mysql-kill-query -i XXXX
 ```
