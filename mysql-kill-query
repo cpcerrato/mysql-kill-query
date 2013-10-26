@@ -1,14 +1,13 @@
 #!/bin/bash
 
-# mysql-kill: Kill MySQL queries that execution time is above the time (in seconds) 
+# mysql-kill-query: Kill MySQL queries that execution time is above the time (in seconds) 
 # specified by command line arguments.)
 
 # Copyright (C) 2013 Carlos Perez Cerrato <cperezcerrato@gmail.com> 
 
 # Functions and variables
-USER=""
-PASS=""
-MYSQL=""
+MYSQL_BIN=""        # Define mysql binary file, default: `which mysql`
+MYSQL_OPTS=""       # Optional, params of mysql command.
 
 function usage(){
     echo "
@@ -26,7 +25,8 @@ Examples:
 Kill all queries that contains "exampledb"
 $ mysql-kill -p exampledb
 
-Kill all queries that contains "exampledb" and execution time is greater than 40 seconds and log in file /tmp/mysql-killed.log
+Kill all queries that contains "exampledb" and execution time is greater than \\
+40 seconds and log in file /tmp/mysql-killed.log
 $ mysql-kill -p exampledb -t 40 -l /tmp/mysql-killed.log
 
 Kill all queries whose execution time highter 15 seconds (default)
@@ -40,24 +40,52 @@ $ mysql-kill -i XXXX
 "
 }
 
+
+function auth(){
+    if [ -f $HOME/.mysql-kill-query ];then
+        echo "Using stored credentials."
+        . $HOME/.mysql-kill-query
+    else
+        echo -ne "Mysql user: "
+        read USER
+        echo -ne "Mysql password: "
+        read -s PASS
+        echo -ne "\nYou want to store credentials in file $HOME/.mysql-kill-query?[y|n]: "
+        read OPT
+        OPT=${OPT,,}
+        while [[ $OPT != "y" && $OPT != "n" ]];do
+            echo -en "Invalid option, please insert 'y' (yes) or 'n' (no):"
+            read OPT
+            OPT=${OPT,,}
+        done
+        if [ $OPT = "y" ];then
+            echo -e "USER=$USER\nPASS=$PASS" > $HOME/.mysql-kill-query ||
+                echo "FAIL, user/password not stored."
+        fi
+    fi
+}
+
+
 function check_var(){
     if [ -z "$USER" ] || [ -z "$PASS" ];then
         echo "You must set USER and PASS in $0."
         exit 1
     elif [ -z "$MYSQ" ];then
-        MYSQL=$(which mysql)
+        MYSQL_BIN=$(which mysql)
     fi
 
-    if [ -z $MYSQL ];then
+    if [ -z $MYSQL_BIN ];then
         echo "I can't find MySQL path."
-        exti 1
+        exit 1
     else
-        MYSQL="$MYSQL -u $USER -p$PASS"
+        MYSQL="$MYSQL_BIN $MYSQL_OPTS -u $USER -p$PASS"
     fi
 }
 
+
 # Main
 
+auth
 check_var
 
 while getopts "ht:i:p:l:" opt; do
