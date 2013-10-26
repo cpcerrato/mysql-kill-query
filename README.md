@@ -22,7 +22,6 @@ Variables:
 ```bash
 MYSQL_BIN=""    # Path to MySQL binary command. If not set, fill with 'which mysql'
 MYSQL_OPTS=""   # Optional params admited by MySQL binari, like -h (host), -s (socket), etc.
-
 ```
 Feel free to put the script in the path you want.
 
@@ -38,6 +37,7 @@ mysql-kill-query [ -p PATTERN ] [ -t TIME(in seconds) ] [-l /path/to/file.log ].
     -t  TIME (optional) time in seconds, default 15.
     -i  ID (optional) Query ID to kill (specifying -p or -t is not needed using this).
     -l  logfile (optional) File to log killed queries.
+    -s  Show queries.
 ```
 Examples:
 
@@ -63,4 +63,9 @@ $ mysql-kill-query -t 3
 Kill query with id equal to XXXX:
 ```bash
 $ mysql-kill-query -i XXXX
+```
+
+Show running queries in MySQL:
+```bash
+$ mysql-kill-query -s
 ```

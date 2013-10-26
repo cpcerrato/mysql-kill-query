@@ -24,7 +24,7 @@ MYSQL_BIN=""       # Path to MySQL binary command. If not set,
 MYSQL_OPTS=""       # Optional, params of mysql command.
 
 function usage(){
-    echo -e "
+    USE="
 Kill MySQL queries that execution time is above the time (in seconds) specified 
 by command line arguments.
 
@@ -53,13 +53,12 @@ $ mysql-kill -t 3
 
 Kill query with id equal to XXXX:
 $ mysql-kill -i XXXX
-
-Show running queries in MySQL:
-$ mysql-kill-query -s
 "
+echo -e $USE
 }
 
-function auth() {
+#set -x
+function auth(){
     if [ -f $HOME/.mysql-kill-query ];then
         echo "Using stored credentials."
         . $HOME/.mysql-kill-query
@@ -101,11 +100,8 @@ function check_var(){
     fi
 }
 
-function running_queries(){
-    $MYSQL -e "SHOW FULL PROCESSLIST;"
-}
-
 # Main
+
 if [ $# -eq 0 ]; then
     usage
     exit 0
@@ -114,13 +110,12 @@ fi
 auth
 check_var
 
-while getopts "hst:i:p:l:" opt; do
+while getopts "ht:i:p:l:" opt; do
   case $opt in
     t) seconds="$OPTARG" ;;
     p) pattern="$OPTARG" ;;
     l) logfile="$OPTARG" ;;
     i) id="$OPTARG" ;;
-    s) running_queries;;
     h|?|*) usage && exit 0 ;;
   esac
 done
