@@ -21,7 +21,7 @@ Set path (if necesary), and special MySQL options in the file /usr/local/bin/mys
 Variables:
 ```bash
 MYSQL_BIN=""    # Path to MySQL binary command. If not set, fill with 'which mysql'
-MYSQL_OPTS=""   # Optional params admited by MySQL binari, like -h (host), -s (socket), etc.
+MYSQL_OPTS=""   # Optional params admited by MySQL binary, like -h (host), -s (socket), etc.
 ```
 Feel free to put the script in the path you want.
 
