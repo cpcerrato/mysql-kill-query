@@ -3,6 +3,8 @@ mysql-kill-query
 
 This script let you find MySQL queries by patterns, execution time, or both  and kill them without restarting MySQL daemon.
 
+**WARNING**: Use this script at your own risk. Kill some queries like UPDATES, INSERT, DELETE, etc can produce data/consistence loss.
+
 Installation
 ============
 
