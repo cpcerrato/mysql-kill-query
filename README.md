@@ -11,7 +11,7 @@ Installation
 Checkout the script:
 
 ```bash
-$ wget https://raw.github.com/cperezcerrato/mysql-kill-query/master/mysql-kill-query /usr/local/bin/
+$ wget --no-check-certificate -O /usr/local/bin/mysql-kill-query https://raw.github.com/cperezcerrato/mysql-kill-query/master/mysql-kill-query 
 ```
 
 Set permissions:
